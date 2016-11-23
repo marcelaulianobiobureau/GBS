@@ -1,0 +1,34 @@
+
+# Amazon instance where I'm running all analysis is i-a711353e
+
+#Removed all adapters and low quality sequences from the GBS library. 
+
+nohup java -jar /usr/share/java/trimmomatic.jar PE -threads 30 -phred33 GBS-MR3_S1_L008_R1_001.fastq.gz GBS-MR3_S1_L008_R2_001.fastq.gz GBS-MR3_S1_L008_R1_001.forward_paired.fastq.gz GBS-MR3_S1_L008_R1_001.forward_unpaired.fastq.gz GBS-MR3_S1_L008_R2_001.fastq.reverse.paired.gz GBS-MR3_S1_L008_R2_001.fastq.reverse.unpaired.gz ILLUMINACLIP:/home/ubuntu/breu_branco/barcodes:2:30:10 LEADING:10 TRAILING:10 SLIDINGWINDOW:4:2 MINLEN:65
+
+
+nohup /home/ubuntu/scripts/rainbow_2.0.4/./rainbow cluster -1 GBS-MR3_S1_L008_R1_001.forward_paired.fastq.gz -2 GBS-MR3_S1_L008_R2_001.fastq.reverse.paired.gz > rbcluster.3out 2> 3.log
+rainbow div -i rbcluster.out -o rbdiv.out
+rainbow merge -o rbasm.out -a -i rbdiv.out -N500
+nohup perl /home/ubuntu/scripts/rainbow_2.0.4/select_best_rbcontig.pl rbasm.out > rbasm.out.best.clusters.fa
+nohup cdhit -i rbasm.out.best.clusters.fa -o rbasm.out.best.clusters.fa.cdhit100 -c 1.0 -T 15 -M 200000
+perl /home/ubuntu/scripts/split_multifasta.pl --input_file=rbasm.out.best.clusters.fa.cdhit100 --output_dir=/home/ubuntu/breu_branco/trimmomatic_paired/parts/ --seqs_per_file=88020
+
+nohup blastx -query 1.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 1.fsa.uniprot
+nohup blastx -query 2.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 2.fsa.uniprot
+nohup blastx -query 3.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 3.fsa.uniprot
+nohup blastx -query 4.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 4.fsa.uniprot
+nohup blastx -query 5.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 5.fsa.uniprot
+nohup blastx -query 6.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 6.fsa.uniprot
+nohup blastx -query 7.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 7.fsa.uniprot
+nohup blastx -query 8.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 8.fsa.uniprot
+nohup blastx -query 9.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 9.fsa.uniprot
+nohup blastx -query 10.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 10.fsa.uniprot
+nohup blastx -query 11.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 11.fsa.uniprot
+nohup blastx -query 12.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 12.fsa.uniprot
+nohup blastx -query 13.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 13.fsa.uniprot
+nohup blastx -query 14.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 14.fsa.uniprot
+nohup blastx -query 15.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 15.fsa.uniprot
+nohup blastx -query 16.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 16.fsa.uniprot
+nohup blastx -query 17.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 17.fsa.uniprot
+nohup blastx -query 18.fsa -db /home/ubuntu/breu_branco/trimmomatic_paired/uniprot_sprot.fasta -evalue 1e-05 -out 18.fsa.uniprot
+
